@@ -9,30 +9,46 @@ const UserList = () => {
       id: 1,
       name: 'Michael Barton',
       company: 'PerkinElmer Inc',
+      phone: '+111 231 23 23',
+      email: 'michaelbarton@email.com',
+      groups: 'Tech',
+      location: 'London, United Kingdom',
+      assistant: 'John 1'
     },
     {
       id: 2,
       name: 'Charles Ross',
-      company: 'CKE Restaurants Inc.'
+      company: 'CKE Restaurants Inc.',
+      phone: '+333 100 10 01',
+      email: 'charles.ross@email.com',
+      groups: 'TV',
+      location: 'New York, United States',
+      assistant: 'John 2'
     },
     {
       id: 3,
       name: 'Luelia Vasquez',
-      company: 'Circuit City Stores Inc.'
+      company: 'Circuit City Stores Inc.',
+      phone: '+345 222 22 22',
+      email: 'luelia.vasquez@email.com',
+      groups: 'Women in Tech',
+      location: 'Madrid, Spain',
+      assistant: 'John 3'
     },
   ]
 
   const [usersData, setUsersData] = useState(data);
   const [modalData, setModalData] = useState(0);
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
-  
   // useEffect(() => {
-    //   setUsersData(data);
-    // }, [])
+  //   setUsersData(data);
+  // }, [])
     
   const handleOpenModal = (event) => {
-    setModalData(event.target.id);
+    const id = Number(event.currentTarget.id)
+    const selectedUser = usersData.filter(user => user.id === id)
+    setModalData(selectedUser[0]);
     setShow(true);
   }
   
@@ -59,7 +75,9 @@ const UserList = () => {
           </div>
         )}
       </div>
-      <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
+      { modalData && 
+        <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
+      }
     </div>
   );
 }

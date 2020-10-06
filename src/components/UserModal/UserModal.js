@@ -6,7 +6,7 @@ const UserModal = (props) => {
 
   const { show, handleClose, modalData } = props; 
 
-  console.log("card", modalData);
+  // console.log("card", modalData);
 
   return (
     <>
@@ -17,24 +17,24 @@ const UserModal = (props) => {
         <Modal.Body id="modal-info">
           <div className="modal-info-main">
             <img src="" className="user-avatar" alt="user" />
-            <div className="user-name">Ana Rita Sousa</div>
-            <div className="user-number">+351 91 539 65</div>
+            <div className="user-name">{modalData.name}</div>
+            <div className="user-number">{modalData.phone}</div>
           </div>
           <div className="modal-info-details">
             <div className="user-field">
-              <div className="user-field-name">Email</div><div>email</div>
+              <div className="user-field-name">Email</div><div>{modalData.email}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Organization</div><div>email</div>
+              <div className="user-field-name">Organization</div><div>{modalData.company}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Assistant</div><div>email</div>
+              <div className="user-field-name">Assistant</div><div>{modalData.assistant}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Groups</div><div>email</div>
+              <div className="user-field-name">Groups</div><div>{modalData.groups}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Location</div><div>email</div>
+              <div className="user-field-name">Location</div><div>{modalData.location}</div>
             </div>
           </div>
         </Modal.Body>

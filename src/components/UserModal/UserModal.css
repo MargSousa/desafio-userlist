@@ -6,9 +6,16 @@
 
 .close {
   font-weight: 500;
+  padding: 5px 10px !important;
+}
+
+.close:focus {
+  outline: none;
 }
 
 #modal-title {
+  display: flex;
+  align-items: center;
   color: #27292C;
   font-weight: bold;
   background-color: #F7F7F7;
@@ -43,12 +50,12 @@
 }
 
 .user-number {
-  color: #0ac144;
+  color: #11de52;
 }
 
 .user-field {
   display: flex;
-  color: #ababab;
+  color: #9a9a9a;
   font-size: 12px;
   margin-bottom: 10px;
 }
