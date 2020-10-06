@@ -21,6 +21,7 @@
   padding: 15px 20px;
   border: solid 1px #EBEBEB;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .list-user-company {
@@ -40,6 +41,4 @@
 .list-photo {
   margin: 10px 10px;
   border-radius: 50%;
-  /* width: 30px;
-  height: 30px; */
 }
