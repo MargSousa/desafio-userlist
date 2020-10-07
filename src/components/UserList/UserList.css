@@ -1,8 +1,9 @@
 .UserList {
-  height: 88vh;
+  min-height: 88vh;
 }
 
 .list-title {
+  font-size: 18px;
   color: #27292C;
   font-weight: bold;
   padding: 20px 20px;
@@ -32,13 +33,32 @@
   color: #8f8f8f;
 }
 
+.user-initials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #DBEAFD;
+  color: #558bd2;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.list-user-initials {
+  width: 40px;
+  height: 40px;
+  font-size: 13px;
+}
+
+.list-user-photo {
+  margin: 10px 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
 .list-icon {
   margin-right: 5px;
   font-size: 18px;
   color: #5e5e5e;
-}
-
-.list-photo {
-  margin: 10px 10px;
-  border-radius: 50%;
 }

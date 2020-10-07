@@ -1,53 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import './UserList.css';
+import axios from 'axios';
 import UserModal from '../UserModal/UserModal';
+import './UserList.css';
 
 const UserList = () => {
   
-  const data = [
-    {
-      id: 1,
-      name: 'Michael Barton',
-      company: 'PerkinElmer Inc',
-      phone: '+111 231 23 23',
-      email: 'michaelbarton@email.com',
-      groups: 'Tech',
-      location: 'London, United Kingdom',
-      assistant: 'John 1'
-    },
-    {
-      id: 2,
-      name: 'Charles Ross',
-      company: 'CKE Restaurants Inc.',
-      phone: '+333 100 10 01',
-      email: 'charles.ross@email.com',
-      groups: 'TV',
-      location: 'New York, United States',
-      assistant: 'John 2'
-    },
-    {
-      id: 3,
-      name: 'Luelia Vasquez',
-      company: 'Circuit City Stores Inc.',
-      phone: '+345 222 22 22',
-      email: 'luelia.vasquez@email.com',
-      groups: 'Women in Tech',
-      location: 'Madrid, Spain',
-      assistant: 'John 3'
-    },
-  ]
-
-  const [usersData, setUsersData] = useState(data);
-  const [modalData, setModalData] = useState(0);
+  const [usersData, setUsersData] = useState([]);
+  const [orgsData, setOrgsData] = useState([]);
+  const [modalData, setModalData] = useState(null);
   const [show, setShow] = useState(false);
 
-  // useEffect(() => {
-  //   setUsersData(data);
-  // }, [])
+  useEffect(() => {
+    axios.get('/persons')
+    .then(res => {
+      console.log(res.data.data[0])
+      setUsersData(res.data.data)
+    })
+    .catch(err => console.log('Error retrieving persons'))
+
+    axios.get('/organizations')
+    .then(res => {
+      setOrgsData(res.data.data)
+    })
+    .catch(err => console.log('Error retrieving organizations'))
+
+  }, [])
     
   const handleOpenModal = (event) => {
     const id = Number(event.currentTarget.id)
     const selectedUser = usersData.filter(user => user.id === id)
+    const orgName = selectedUser[0].org_name;
+    const selectedOrg = orgsData.filter(org => org.name === orgName)
+    selectedUser[0].organization = selectedOrg[0];
     setModalData(selectedUser[0]);
     setShow(true);
   }
@@ -66,18 +50,21 @@ const UserList = () => {
               <div className="list-user-name">{user.name}</div>
               <div className="list-user-company">
                 <i className="material-icons list-icon">corporate_fare</i>
-                {user.company}
+                {user.org_name}
               </div>
             </div>
-            <div>
-              <img src="" className="list-photo" alt={user.name} />
+            <div className="user-initials list-user-initials">
+              {user.first_char}{user.last_name.slice(0,1)}
             </div>
+            {/* <div>
+              <img src="" className="list-user-photo" alt={user.name} />
+            </div> */}
           </div>
         )}
       </div>
-      { modalData && 
-        <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
-      }
+    { modalData && 
+      <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
+    }
     </div>
   );
 }

@@ -28,19 +28,22 @@
 }
 
 .modal-info-main {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-bottom: solid 1px #EBEBEB;
-  padding: 30px 0px 30px 0px;
+  padding: 20px 0px;
 }
 
 .modal-info-details {
   padding: 30px 0px 70px 0px;
 }
 
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.modal-photo {
+  width: 70px;
+  height: 70px;
+  font-size: 18px;
+  margin: 5px 0px;
 }
 
 .user-name {
@@ -51,6 +54,7 @@
 
 .user-number {
   color: #11de52;
+  font-size: 15px;
 }
 
 .user-field {
