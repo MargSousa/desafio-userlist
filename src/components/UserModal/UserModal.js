@@ -16,7 +16,6 @@ const UserModal = (props) => {
         </Modal.Header>
         <Modal.Body id="modal-info">
           <div className="modal-info-main">
-            {/* <img src="" className="user-avatar" alt="user" /> */}
             <div className="user-initials modal-photo">
               {modalData.first_char}{modalData.last_name.slice(0,1)}
             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import UserModal from '../UserModal/UserModal';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './UserList.css';
 
 const UserList = () => {
@@ -13,7 +14,6 @@ const UserList = () => {
   useEffect(() => {
     axios.get('/persons')
     .then(res => {
-      console.log(res.data.data[0])
       setUsersData(res.data.data)
     })
     .catch(err => console.log('Error retrieving persons'))
@@ -40,28 +40,46 @@ const UserList = () => {
     setShow(false)
   }
 
+  const handleOnDragEnd = (params) => {
+    const sourceIndex = params.source.index;
+    const destinIndex = params.destination.index;
+    let orderData = [...usersData];
+    orderData.splice(sourceIndex, 1);
+    orderData.splice(destinIndex, 0, usersData[sourceIndex]);
+    setUsersData(orderData);
+  
+  }
+
   return (
     <div className="UserList">
       <div className="list-title">People's List</div>
-      <div className="list">
-        {usersData && usersData.map((user) => 
-          <div className="list-user" key={user.id} id={user.id} onClick={handleOpenModal}>
-            <div>
-              <div className="list-user-name">{user.name}</div>
-              <div className="list-user-company">
-                <i className="material-icons list-icon">corporate_fare</i>
-                {user.org_name}
-              </div>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="droppable-1">
+          {(provided, snapshot) => (
+            <div className="list" ref={provided.innerRef} {...provided.droppableProps} >
+              {usersData && usersData.map((user, index) => (
+              <Draggable key={user.id} draggableId={`draggable-${user.id}`} index={index}>
+                {(provided, snapshot) => (
+                  <div className="list-user" id={user.id} onClick={handleOpenModal} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                    <div>
+                      <div className="list-user-name">{user.name}</div>
+                      <div className="list-user-company">
+                        <i className="material-icons list-icon">corporate_fare</i>
+                        {user.org_name}
+                      </div>
+                    </div>
+                    <div className="user-initials list-user-initials">
+                      {user.first_char}{user.last_name.slice(0,1)}
+                    </div>
+                  </div>
+                )}
+              </Draggable> 
+              ))}
+              {provided.placeholder}
             </div>
-            <div className="user-initials list-user-initials">
-              {user.first_char}{user.last_name.slice(0,1)}
-            </div>
-            {/* <div>
-              <img src="" className="list-user-photo" alt={user.name} />
-            </div> */}
-          </div>
-        )}
-      </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     { modalData && 
       <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
     }
