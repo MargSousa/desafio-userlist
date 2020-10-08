@@ -6,8 +6,6 @@ const UserModal = (props) => {
 
   const { show, handleClose, modalData } = props; 
 
-  // console.log("card", modalData);
-
   return (
     <>
       <Modal id="modal-card" show={show} onHide={handleClose} centered>

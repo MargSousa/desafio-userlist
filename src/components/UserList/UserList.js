@@ -12,13 +12,18 @@ const UserList = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    axios.get('/persons')
+    const companyDomain = "desafiolist";
+    const apiToken = "1113ec917592c2787272af04dfaf51159b34a443";
+    const personsURL = `http://${companyDomain}.pipedrive.com/api/v1/persons?api_token=${apiToken}`;
+    const orgsURL = `http://${companyDomain}.pipedrive.com/api/v1/organizations?api_token=${apiToken}`;
+    
+    axios.get(personsURL)
     .then(res => {
       setUsersData(res.data.data)
     })
     .catch(err => console.log('Error retrieving persons'))
 
-    axios.get('/organizations')
+    axios.get(orgsURL)
     .then(res => {
       setOrgsData(res.data.data)
     })
@@ -47,7 +52,6 @@ const UserList = () => {
     orderData.splice(sourceIndex, 1);
     orderData.splice(destinIndex, 0, usersData[sourceIndex]);
     setUsersData(orderData);
-  
   }
 
   return (
