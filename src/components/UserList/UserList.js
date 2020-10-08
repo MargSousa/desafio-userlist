@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import UserModal from '../UserModal/UserModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './UserList.css';
 
 const UserList = () => {
   
+  const [searchData, setSearchData] = useState([]);
   const [usersData, setUsersData] = useState([]);
   const [orgsData, setOrgsData] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const apiToken = "1113ec917592c2787272af04dfaf51159b34a443";
@@ -20,7 +22,8 @@ const UserList = () => {
     
     axios.get(personsURL)
       .then(res => {
-        setUsersData(res.data.data)
+        setUsersData(res.data.data);
+        setSearchData(res.data.data);
       })
       .catch(err => console.log('Error retrieving persons'))
 
@@ -73,9 +76,30 @@ const UserList = () => {
       .catch(err => console.log('Error retrieving persons'))
   }
 
+  const handleSearch = (event) => {
+    const { value } = event.target;
+    setSearch(value);
+    
+    const data = searchData;
+    const searchResults = data.filter(user => user.name.toLowerCase().includes(value.toLowerCase()) === true);
+    setUsersData(searchResults);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  }
+
   return (
     <div className="UserList">
-      <div className="list-title">People's List</div>
+      <div className="list-header">
+        <div className="list-title">People's List</div>
+        <div className="list-search">
+          <i className="material-icons search-icon">search</i>
+          <form onSubmit={handleSubmit}>
+            <input type="text" name="search" value={search} className="search-input" onChange={handleSearch} placeholder="Search by name..." autocomplete="off" />
+          </form>
+        </div>
+      </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="droppable-1">
           {(provided, snapshot) => (
