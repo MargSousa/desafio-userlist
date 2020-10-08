@@ -64,3 +64,37 @@
   font-size: 18px;
   color: #5e5e5e;
 }
+
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.button-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-icon {
+  font-size: 16px;
+  color: #5e5e5e;
+  vertical-align: inherit;
+}
+
+.button-delete {
+  background-color: #ffffff;
+  color: black; 
+  border: 1px solid #EBEBEB;
+  border-radius: 2px;
+  margin: 0px 0px 0px 20px;
+  padding: 2px 5px;
+  vertical-align: sub;
+}
+
+.button-delete:focus {
+  outline: none;
+}
+
+.button-delete i {
+  pointer-events: none;
+}

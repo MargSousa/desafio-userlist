@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import UserModal from '../UserModal/UserModal';
+import DeleteModal from '../DeleteModal/DeleteModal';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './UserList.css';
 
@@ -10,25 +11,24 @@ const UserList = () => {
   const [orgsData, setOrgsData] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
   useEffect(() => {
-    const companyDomain = "desafiolist";
     const apiToken = "1113ec917592c2787272af04dfaf51159b34a443";
-    const personsURL = `http://${companyDomain}.pipedrive.com/api/v1/persons?api_token=${apiToken}`;
-    const orgsURL = `http://${companyDomain}.pipedrive.com/api/v1/organizations?api_token=${apiToken}`;
+    const personsURL = `http://api.pipedrive.com/v1/persons?api_token=${apiToken}`;
+    const orgsURL = `http://api.pipedrive.com/v1/organizations?api_token=${apiToken}`;
     
     axios.get(personsURL)
-    .then(res => {
-      setUsersData(res.data.data)
-    })
-    .catch(err => console.log('Error retrieving persons'))
+      .then(res => {
+        setUsersData(res.data.data)
+      })
+      .catch(err => console.log('Error retrieving persons'))
 
     axios.get(orgsURL)
-    .then(res => {
-      setOrgsData(res.data.data)
-    })
-    .catch(err => console.log('Error retrieving organizations'))
-
+      .then(res => {
+        setOrgsData(res.data.data)
+      })
+      .catch(err => console.log('Error retrieving organizations'))
   }, [])
     
   const handleOpenModal = (event) => {
@@ -38,11 +38,17 @@ const UserList = () => {
     const selectedOrg = orgsData.filter(org => org.name === orgName)
     selectedUser[0].organization = selectedOrg[0];
     setModalData(selectedUser[0]);
-    setShow(true);
+
+    if (event.target.name === "delete") {
+      setShowDelete(true);
+    } else {
+      setShow(true);
+    }
   }
   
   const handleCloseModal = () => {
-    setShow(false)
+    setShow(false);
+    setShowDelete(false);
   }
 
   const handleOnDragEnd = (params) => {
@@ -52,6 +58,19 @@ const UserList = () => {
     orderData.splice(sourceIndex, 1);
     orderData.splice(destinIndex, 0, usersData[sourceIndex]);
     setUsersData(orderData);
+  }
+
+  const handleDeletePerson = () => {
+    const apiToken = "1113ec917592c2787272af04dfaf51159b34a443";
+    const deleteURL = `https://api.pipedrive.com/v1/persons/${modalData.id}?api_token=${apiToken}`;
+  
+    axios.delete(deleteURL)
+      .then(res => {
+        const newData = usersData.filter(user => user.id !== modalData.id)
+        setUsersData(newData);
+        setShowDelete(false);
+      })
+      .catch(err => console.log('Error retrieving persons'))
   }
 
   return (
@@ -72,8 +91,15 @@ const UserList = () => {
                         {user.org_name}
                       </div>
                     </div>
-                    <div className="user-initials list-user-initials">
-                      {user.first_char}{user.last_name.slice(0,1)}
+                    <div className="right-section">
+                      <div className="user-initials list-user-initials">
+                        {user.first_char}{user.last_name.slice(0,1)}
+                      </div>
+                      <div className="button-section">
+                        <button className="button-delete" name="delete">
+                          <i className="material-icons delete-icon">delete</i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -86,6 +112,9 @@ const UserList = () => {
       </DragDropContext>
     { modalData && 
       <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
+    }
+    { modalData && 
+      <DeleteModal show={showDelete} user={modalData.name} handleClose={handleCloseModal} handleDelete={handleDeletePerson}/>
     }
     </div>
   );
