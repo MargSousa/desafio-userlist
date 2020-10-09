@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import UserModal from '../UserModal/UserModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
+import NewUserModal from '../NewUserModal/NewUserModal';
 import './UserList.css';
 
 const UserList = () => {
@@ -13,12 +14,12 @@ const UserList = () => {
   const [modalData, setModalData] = useState(null);
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showNewUser, setShowNewUser] = useState(false);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const apiToken = "1113ec917592c2787272af04dfaf51159b34a443";
-    const personsURL = `http://api.pipedrive.com/v1/persons?api_token=${apiToken}`;
-    const orgsURL = `http://api.pipedrive.com/v1/organizations?api_token=${apiToken}`;
+    const personsURL = `http://api.pipedrive.com/v1/persons?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
+    const orgsURL = `http://api.pipedrive.com/v1/organizations?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
     
     axios.get(personsURL)
       .then(res => {
@@ -52,6 +53,7 @@ const UserList = () => {
   const handleCloseModal = () => {
     setShow(false);
     setShowDelete(false);
+    setShowNewUser(false);
   }
 
   const handleOnDragEnd = (params) => {
@@ -64,16 +66,14 @@ const UserList = () => {
   }
 
   const handleDeletePerson = () => {
-    const apiToken = "1113ec917592c2787272af04dfaf51159b34a443";
-    const deleteURL = `https://api.pipedrive.com/v1/persons/${modalData.id}?api_token=${apiToken}`;
-  
+    const deleteURL = `https://api.pipedrive.com/v1/persons/${modalData.id}?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
     axios.delete(deleteURL)
       .then(res => {
         const newData = usersData.filter(user => user.id !== modalData.id)
         setUsersData(newData);
         setShowDelete(false);
       })
-      .catch(err => console.log('Error retrieving persons'))
+      .catch(err => console.log('Error deleting person'))
   }
 
   const handleSearch = (event) => {
@@ -85,19 +85,34 @@ const UserList = () => {
     setUsersData(searchResults);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmitSearch = (event) => {
     event.preventDefault();
+  }
+
+  const handleOpenNewUser = () => {
+    setShowNewUser(true);
+  }
+
+  const handleNewUser = (data) => {
+    console.log(data);
+    handleCloseModal();
   }
 
   return (
     <div className="UserList">
       <div className="list-header">
         <div className="list-title">People's List</div>
-        <div className="list-search">
-          <i className="material-icons search-icon">search</i>
-          <form onSubmit={handleSubmit}>
-            <input type="text" name="search" value={search} className="search-input" onChange={handleSearch} placeholder="Search by name..." autocomplete="off" />
-          </form>
+        <div className="list-features">
+          <button id="list-add-user" onClick={handleOpenNewUser}>
+            <i className="material-icons add-icon">add</i>
+            <span className="add-title">Person</span>
+          </button>
+          <div className="list-search">
+            <i className="material-icons search-icon">search</i>
+            <form onSubmit={handleSubmitSearch}>
+              <input type="text" name="search" value={search} className="search-input" onChange={handleSearch} placeholder="Search by name..." autoComplete="off" />
+            </form>
+          </div>
         </div>
       </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -140,6 +155,7 @@ const UserList = () => {
     { modalData && 
       <DeleteModal show={showDelete} user={modalData.name} handleClose={handleCloseModal} handleDelete={handleDeletePerson}/>
     }
+    <NewUserModal show={showNewUser} handleClose={handleCloseModal} handleAddNew={handleNewUser}/>
     </div>
   );
 }

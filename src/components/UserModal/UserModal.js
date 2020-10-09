@@ -22,13 +22,16 @@ const UserModal = (props) => {
           </div>
           <div className="modal-info-details">
             <div className="user-field">
-              <div className="user-field-name">Email</div><div>{modalData.email[0].value}</div>
+              <div className="user-field-name">Email</div>
+              <div>{modalData.email[0].value}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Organization</div><div>{modalData.org_name}</div>
+              <div className="user-field-name">Organization</div>
+              <div>{modalData.org_name}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Assistant</div><div>{modalData['9632df94b56a8117253efbdb68d0654d298d7dd7']}</div>
+              <div className="user-field-name">Assistant</div>
+              <div>{modalData['9632df94b56a8117253efbdb68d0654d298d7dd7']}</div>
             </div>
             <div className="user-field">
               <div className="user-field-name">Groups</div><div>{modalData.organization['6d43f45c21c3265a5614068fd51042674d528fab']}</div>
