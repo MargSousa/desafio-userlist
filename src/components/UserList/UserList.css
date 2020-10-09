@@ -2,16 +2,96 @@
   min-height: 88vh;
 }
 
-.list-title {
-  font-size: 18px;
-  color: #27292C;
-  font-weight: bold;
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px 20px;
   border-bottom: solid 1px #EBEBEB;
 }
 
+.list-title {
+  font-size: 18px;
+  color: #27292C;
+  font-weight: bold;
+}
+
+.list-features {
+  display: flex;
+}
+
+#list-add-user {
+  display: flex;
+  align-items: center;
+  background-color: #EEEEEE;
+  border-radius: 50px;
+  min-width: 35px;
+  height: 35px;
+  margin-right: 10px;
+  border: solid 1px #EBEBEB;
+  outline: 0;
+}
+
+#list-add-user:hover  {
+  background-color: #EBEBEB;
+}
+
+.add-title {
+  display: none;
+}
+
+#list-add-user:hover .add-title {
+  display: flex;
+  color: #5e5e5e;
+  font-size: 12px;
+  margin: 0px 5px;
+  font-weight: 600;
+}
+
+#list-add-user:active  {
+  border: 1px solid #5e5e5e;
+}
+
+.list-search {
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  outline: 0;
+  border: solid 1px #EBEBEB;
+  padding: 5px 10px;
+  max-width: 200px;
+  line-height: 0px;
+}
+
+.add-icon,
+.search-icon {
+  font-size: 20px;
+  color: #5e5e5e;
+}
+
+.search-input {
+  border: 0px;
+  outline: none;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.list-search,
+.search-input {
+  background-color: #EEEEEE;
+}
+
+.list-search:focus-within,
+.search-input:focus {
+  background-color: white;
+}
+
+.list-search:focus-within  {
+  border: 1px solid #5e5e5e;
+}
+
 .list {
-  padding: 5px 15px;
+  padding: 0px 15px;
 }
 
 .list-user {
@@ -63,4 +143,38 @@
   margin-right: 5px;
   font-size: 18px;
   color: #5e5e5e;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.button-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-icon {
+  font-size: 16px;
+  color: #5e5e5e;
+  vertical-align: inherit;
+}
+
+.button-delete {
+  background-color: #ffffff;
+  color: black; 
+  border: 1px solid #EBEBEB;
+  border-radius: 2px;
+  margin: 0px 0px 0px 20px;
+  padding: 2px 5px;
+  vertical-align: sub;
+}
+
+.button-delete:focus {
+  outline: none;
+}
+
+.button-delete i {
+  pointer-events: none;
 }
