@@ -11,7 +11,7 @@ const NewUserModal = (props) => {
   const { register, handleSubmit, errors } = useForm();
 
   const onFormSubmit = async (data) => {
-    // const { org_name, email, assistant, ...addData } = data;
+    // const { org_name, email, assistant, location, groups, ...addData } = data;
     // let orgID = 0;
     // const getOrgURL = `https://api.pipedrive.com/v1/organizations/search?term=${org_name}&start=0&api_token=1113ec917592c2787272af04dfaf51159b34a443`;
     // const newOrgURL = `https://api.pipedrive.com/v1/organizations?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
@@ -95,6 +95,20 @@ const NewUserModal = (props) => {
                     <input type="text" name="assistant" ref={register({ required:true })} />
                   </div>
                   {errors.assistant && <div className="form-error">* Field required</div>}
+                </div>
+                <div>
+                  <div className="new-input"> 
+                    <span className="new-input-name">Groups</span>
+                    <input type="text" name="groups" ref={register({ required:true })} />
+                  </div>
+                  {errors.groups && <div className="form-error">* Field required</div>}
+                </div>
+                <div>
+                  <div className="new-input"> 
+                    <span className="new-input-name">Location</span>
+                    <input type="text" name="location" ref={register({ required:true })} />
+                  </div>
+                  {errors.location && <div className="form-error">* Field required</div>}
                 </div>
               </div>
             </Modal.Body>
