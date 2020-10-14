@@ -10,7 +10,7 @@ const UserList = () => {
   
   const [searchData, setSearchData] = useState([]);
   const [usersData, setUsersData] = useState([]);
-  const [orgsData, setOrgsData] = useState([]);
+  const [orgData, setOrgData] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -19,28 +19,29 @@ const UserList = () => {
 
   useEffect(() => {
     const personsURL = `http://api.pipedrive.com/v1/persons?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
-    const orgsURL = `http://api.pipedrive.com/v1/organizations?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
-    
     axios.get(personsURL)
-      .then(res => {
-        setUsersData(res.data.data);
-        setSearchData(res.data.data);
-      })
-      .catch(err => console.log('Error retrieving persons'))
+    .then(res => {
+      setUsersData(res.data.data);
+      setSearchData(res.data.data);
+    })
+    .catch(err => console.log('Error retrieving persons'));
 
-    axios.get(orgsURL)
-      .then(res => {
-        setOrgsData(res.data.data)
-      })
-      .catch(err => console.log('Error retrieving organizations'))
   }, [])
+
+  const getOrgData = (id) => {
+    const orgsURL = `http://api.pipedrive.com/v1/organizations/${id}?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
+    axios.get(orgsURL)
+    .then(res => {
+      setOrgData(res.data.data);
+    })
+    .catch(err => console.log('Error retrieving organization'));
+  };
     
   const handleOpenModal = (event) => {
-    const id = Number(event.currentTarget.id)
-    const selectedUser = usersData.filter(user => user.id === id)
-    const orgName = selectedUser[0].org_name;
-    const selectedOrg = orgsData.filter(org => org.name === orgName)
-    selectedUser[0].organization = selectedOrg[0];
+    const id = Number(event.currentTarget.id);
+    const selectedUser = usersData.filter(user => user.id === id);
+    getOrgData(selectedUser[0].org_id.value);
+    selectedUser[0].organization = orgData;
     setModalData(selectedUser[0]);
 
     if (event.target.name === "delete") {
@@ -149,13 +150,13 @@ const UserList = () => {
           )}
         </Droppable>
       </DragDropContext>
-    { modalData && 
-      <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
-    }
-    { modalData && 
-      <DeleteModal show={showDelete} user={modalData.name} handleClose={handleCloseModal} handleDelete={handleDeletePerson}/>
-    }
-    <NewUserModal show={showNewUser} handleClose={handleCloseModal} handleAddNew={handleNewUser} />
+      { modalData && 
+        <UserModal show={show} modalData={modalData} handleClose={handleCloseModal} />
+      }
+      { modalData && 
+        <DeleteModal show={showDelete} user={modalData.name} handleClose={handleCloseModal} handleDelete={handleDeletePerson}/>
+      }
+      <NewUserModal show={showNewUser} handleClose={handleCloseModal} handleAddNew={handleNewUser} />
     </div>
   );
 }
