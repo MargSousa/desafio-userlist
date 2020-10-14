@@ -5,7 +5,7 @@ import './UserModal.css';
 const UserModal = (props) => {
 
   const { show, handleClose, modalData } = props; 
-
+  
   return (
     <>
       <Modal id="modal-card" show={show} onHide={handleClose} centered>
@@ -34,11 +34,14 @@ const UserModal = (props) => {
               <div>{modalData['9632df94b56a8117253efbdb68d0654d298d7dd7']}</div>
             </div>
             <div className="user-field">
-              <div className="user-field-name">Groups</div><div>{modalData.organization['6d43f45c21c3265a5614068fd51042674d528fab']}</div>
+              <div className="user-field-name">Groups</div>
+              <div>{modalData.organization['6d43f45c21c3265a5614068fd51042674d528fab']}</div>
             </div>
             <div className="user-field">
               <div className="user-field-name">Location</div>
-              <div>{modalData.organization.address_locality}, {modalData.organization.address_country}</div>
+              <div>
+                { `${modalData.organization.address}, ${modalData.organization.address_country}`}
+              </div>
             </div>
           </div>
         </Modal.Body>

@@ -94,8 +94,8 @@ const UserList = () => {
   }
 
   const handleNewUser = (data) => {
-    console.log(data);
     handleCloseModal();
+    window.location.reload();
   }
 
   return (
@@ -155,7 +155,7 @@ const UserList = () => {
     { modalData && 
       <DeleteModal show={showDelete} user={modalData.name} handleClose={handleCloseModal} handleDelete={handleDeletePerson}/>
     }
-    <NewUserModal show={showNewUser} handleClose={handleCloseModal} handleAddNew={handleNewUser}/>
+    <NewUserModal show={showNewUser} handleClose={handleCloseModal} handleAddNew={handleNewUser} />
     </div>
   );
 }

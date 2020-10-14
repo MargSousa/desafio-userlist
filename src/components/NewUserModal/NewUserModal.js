@@ -11,45 +11,49 @@ const NewUserModal = (props) => {
   const { register, handleSubmit, errors } = useForm();
 
   const onFormSubmit = async (data) => {
-    // const { org_name, email, assistant, location, groups, ...addData } = data;
-    // let orgID = 0;
-    // const getOrgURL = `https://api.pipedrive.com/v1/organizations/search?term=${org_name}&start=0&api_token=1113ec917592c2787272af04dfaf51159b34a443`;
-    // const newOrgURL = `https://api.pipedrive.com/v1/organizations?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
-    // const postURL = `https://api.pipedrive.com/v1/persons?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
+    const { org_name, groups, address, city, country, lastName, ...newPersonData } = data;
+    newPersonData.name = `${data.name} ${lastName}`;
+    newPersonData.email = { value: newPersonData.email };
+    let orgID = 0;
+    const getOrgURL = `https://api.pipedrive.com/v1/organizations/search?term=${org_name}&fields=name&exact_match=true&start=0&api_token=1113ec917592c2787272af04dfaf51159b34a443`;
+    const newOrgURL = `https://api.pipedrive.com/v1/organizations?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
+    const postURL = `https://api.pipedrive.com/v1/persons?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
 
-    // // Check if organization exists
-    // await axios.get(getOrgURL)
-    //   .then( res => {
-    //     const itemsLength = res.data.data.items.length;
-    //     if (itemsLength > 0) {
-    //       orgID = res.data.data.items[0].item.id;
-    //     }
-    //   })
+    // Check if organization exists
+    await axios.get(getOrgURL)
+      .then( res => {
+        const itemsLength = res.data.data.items.length;
+        if (itemsLength > 0) {
+          orgID = res.data.data.items[0].item.id;
+        }
+      })
 
-    // // If organization doesnt exist, it will be created
-    // if (orgID === 0) {
-    //   const newOrg = { name: org_name }
-    //   await axios.post(newOrgURL, newOrg)
-    //     .then(res => {
-    //       orgID = res.data.data.id;
-    //     })
-    //     .catch(err => console.log('Error creating org'))
-    // }
+    // If organization doesnt exist, it will be created
+    if (orgID === 0) {
+      const newOrg = { 
+        name: org_name,
+        address: `${address}, ${city}`,
+        address_country: country,
+        address_locality: city,
+        '6d43f45c21c3265a5614068fd51042674d528fab': groups,
+       };
 
-    // const newEmail = { value: email }
+      await axios.post(newOrgURL, newOrg)
+        .then(res => {
+          orgID = res.data.data.id;
+        })
+        .catch(err => console.log('Error creating org'))
+    }
 
-    // addData.org_id = orgID;
-    // addData.email = newEmail;
+    newPersonData.org_id = orgID;
 
-    // // Add new Person
-    // await axios.post(postURL, addData)
-    //   .then(res => {
-    //     console.log("post", res.data)
-    //     handleAddNew(data);
-    //   })
-    //   .catch(err => console.log('Error adding person'))
-    
-    handleAddNew(data);
+    //Add new Person
+    await axios.post(postURL, newPersonData)
+      .then(res => {
+        handleAddNew();
+      })
+      .catch(err => console.log('Error adding person'))
+  
   }
 
   return (
@@ -63,8 +67,15 @@ const NewUserModal = (props) => {
               <div className="new-form">
                 <div>
                   <div className="new-input"> 
-                    <span className="new-input-name">Name</span>
+                    <span className="new-input-name">First Name</span>
                     <input type="text" name="name" ref={register({ required:true })} />
+                  </div>
+                  {errors.name && <div className="form-error">* Field required</div>}
+                </div>
+                <div>
+                  <div className="new-input"> 
+                    <span className="new-input-name">Last Name</span>
+                    <input type="text" name="lastName" ref={register({ required:true })} />
                   </div>
                   {errors.name && <div className="form-error">* Field required</div>}
                 </div>
@@ -92,7 +103,7 @@ const NewUserModal = (props) => {
                 <div>
                   <div className="new-input"> 
                     <span className="new-input-name">Assistant</span>
-                    <input type="text" name="assistant" ref={register({ required:true })} />
+                    <input type="text" name="9632df94b56a8117253efbdb68d0654d298d7dd7" ref={register({ required:true })} />
                   </div>
                   {errors.assistant && <div className="form-error">* Field required</div>}
                 </div>
@@ -105,8 +116,22 @@ const NewUserModal = (props) => {
                 </div>
                 <div>
                   <div className="new-input"> 
-                    <span className="new-input-name">Location</span>
-                    <input type="text" name="location" ref={register({ required:true })} />
+                    <span className="new-input-name">Address</span>
+                    <input type="text" name="address" ref={register({ required:true })} />
+                  </div>
+                  {errors.location && <div className="form-error">* Field required</div>}
+                </div>
+                <div>
+                  <div className="new-input"> 
+                    <span className="new-input-name">City</span>
+                    <input type="text" name="city" ref={register({ required:true })} />
+                  </div>
+                  {errors.location && <div className="form-error">* Field required</div>}
+                </div>
+                <div>
+                  <div className="new-input"> 
+                    <span className="new-input-name">Country</span>
+                    <input type="text" name="country" ref={register({ required:true })} />
                   </div>
                   {errors.location && <div className="form-error">* Field required</div>}
                 </div>
