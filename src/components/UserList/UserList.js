@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import UserModal from '../UserModal/UserModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
 import NewUserModal from '../NewUserModal/NewUserModal';
+// import PaginationBar from '../PaginationBar/PaginationBar';
 import './UserList.css';
 
 const UserList = () => {
@@ -15,6 +16,10 @@ const UserList = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [showNewUser, setShowNewUser] = useState(false);
   const [search, setSearch] = useState('');
+
+  // const [currentPage, setCurrentPage] = useState('1');
+  // const [pages, setPages] = useState([1,2,3,4,5]);
+  // const [peoplePerPage] = useState(6);
 
   useEffect(() => {
     const personsURL = `http://api.pipedrive.com/v1/persons?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
@@ -97,6 +102,10 @@ const UserList = () => {
     window.location.reload();
   }
 
+  // const handleChangePage = (id) => {
+  //   setCurrentPage(id);
+  // }
+
   return (
     <div className="UserList">
       <div className="list-header">
@@ -155,6 +164,7 @@ const UserList = () => {
         <DeleteModal show={showDelete} user={modalData.name} handleClose={handleCloseModal} handleDelete={handleDeletePerson}/>
       }
       <NewUserModal show={showNewUser} handleClose={handleCloseModal} handleAddNew={handleNewUser} />
+      {/* <PaginationBar pages={pages} current={currentPage} changePage={handleChangePage} /> */}
     </div>
   );
 }
