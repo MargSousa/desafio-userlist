@@ -10,7 +10,6 @@ const UserList = () => {
   
   const [searchData, setSearchData] = useState([]);
   const [usersData, setUsersData] = useState([]);
-  const [orgData, setOrgData] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -25,30 +24,29 @@ const UserList = () => {
       setSearchData(res.data.data);
     })
     .catch(err => console.log('Error retrieving persons'));
-
   }, [])
-
-  const getOrgData = (id) => {
-    const orgsURL = `http://api.pipedrive.com/v1/organizations/${id}?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
-    axios.get(orgsURL)
-    .then(res => {
-      setOrgData(res.data.data);
-    })
-    .catch(err => console.log('Error retrieving organization'));
-  };
     
   const handleOpenModal = (event) => {
+    const eventName = event.target.name;
     const id = Number(event.currentTarget.id);
     const selectedUser = usersData.filter(user => user.id === id);
-    getOrgData(selectedUser[0].org_id.value);
-    selectedUser[0].organization = orgData;
-    setModalData(selectedUser[0]);
 
-    if (event.target.name === "delete") {
-      setShowDelete(true);
-    } else {
-      setShow(true);
-    }
+    const getOrgData = async (id) => {
+      const orgsURL = `http://api.pipedrive.com/v1/organizations/${id}?api_token=1113ec917592c2787272af04dfaf51159b34a443`;
+      await axios.get(orgsURL)
+      .then(res => {
+        selectedUser[0].organization = res.data.data;
+        setModalData(selectedUser[0]);
+      })
+      .catch(err => console.log('Error retrieving organization'));
+      
+      if (eventName === "delete") {
+        setShowDelete(true);
+      } else {
+        setShow(true);
+      }
+    };
+    getOrgData(selectedUser[0].org_id.value);
   }
   
   const handleCloseModal = () => {
