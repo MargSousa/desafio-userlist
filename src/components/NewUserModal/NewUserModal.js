@@ -33,8 +33,8 @@ const NewUserModal = (props) => {
       const newOrg = { 
         name: org_name,
         address: `${address}, ${city}`,
-        address_country: country,
-        address_locality: city,
+        "address_country": country,
+        "address_locality": city,
         '6d43f45c21c3265a5614068fd51042674d528fab': groups,
        };
 
